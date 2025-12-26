@@ -150,7 +150,9 @@ def tokenize(ex):
     out["labels"] = out["input_ids"].copy()
     return out
 
+print("🔄 Start tokenizing...")
 train_ds = train_ds.map(tokenize, remove_columns=["text"])
+print("✅ Tokenize done!")
 
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
