@@ -158,6 +158,11 @@ args = TrainingArguments(
     learning_rate=lr,                 # ✅ chắc chắn float
     fp16=fp16,
     logging_dir=cfg["paths"]["log_dir"],
+    logging_strategy="steps",
+    logging_steps=10,          # log mỗi 10 step (bạn chỉnh 20/50 tùy)
+    log_level="info",
+    disable_tqdm=False,        # quan trọng: bật progress bar
+
     save_strategy="epoch",
     report_to="none",
 )
