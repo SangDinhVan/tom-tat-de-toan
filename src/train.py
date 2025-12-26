@@ -173,5 +173,5 @@ trainer = Trainer(
     train_dataset=train_ds,
     data_collator=data_collator,
 )
-
+print("\n🚀 BẮT ĐẦU TRAINING...\n")
 trainer.train()
