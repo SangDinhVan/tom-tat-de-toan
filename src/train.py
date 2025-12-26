@@ -10,6 +10,7 @@ from transformers import (
 )
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from datasets import Dataset
+from transformers import BitsAndBytesConfig
 
 
 # ---------------------------
@@ -73,13 +74,20 @@ max_seq_length = to_int(cfg["training"].get("max_seq_length", 2048), default=204
 tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
 tokenizer.pad_token = tokenizer.eos_token
 
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_quant_type="nf4",
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_compute_dtype=torch.float16,
+)
+
 model = AutoModelForCausalLM.from_pretrained(
     model_path,
-    load_in_8bit=True,
+    quantization_config=bnb_config,
     device_map="auto",
     trust_remote_code=True,
 )
-
+print("✅ 4) Prepare k-bit + LoRA...")
 # chuẩn cho k-bit training
 model = prepare_model_for_kbit_training(model)
 
@@ -91,7 +99,7 @@ lora_cfg = LoraConfig(
     task_type="CAUSAL_LM",
 )
 model = get_peft_model(model, lora_cfg)
-
+print("✅ 4) LoRA OK")
 
 # ---------------------------
 # Load dataset JSONL -> HuggingFace Dataset
