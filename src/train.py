@@ -102,7 +102,19 @@ def read_jsonl(path):
         return [json.loads(line) for line in f if line.strip()]
 
 raw_train = read_jsonl(cfg["paths"]["processed_train"])
-train_ds = Dataset.from_list(raw_train)
+
+def safe_cast(obj):
+    if isinstance(obj, dict):
+        return {k: safe_cast(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [safe_cast(x) for x in obj]
+    if isinstance(obj, (int, float)):
+        return str(obj)  # 🔥 ÉP TOÀN BỘ SỐ → STRING
+    return obj
+
+safe_data = [safe_cast(x) for x in raw_train]
+
+train_ds = Dataset.from_list(safe_data)
 
 # Convert messages -> a single text prompt (simple, stable)
 def messages_to_text(ex):
