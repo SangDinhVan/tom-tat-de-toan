@@ -1,0 +1,3 @@
+Convert the following math word problem into InfinityMATH format.
+Replace concrete numbers with parameterized variables.
+Return ONLY JSON.

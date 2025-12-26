@@ -1,0 +1,37 @@
+# ========= Paths =========
+paths:
+  raw_data: data/raw/train.fixed.jsonl
+  processed_train: data/processed/train.jsonl
+  processed_val: data/processed/val.jsonl
+  schema: data/schema/output_schema.json
+
+  model_name: "D:/hf/models/Qwen2.5-3B-Instruct"
+  output_dir: outputs/checkpoints
+  log_dir: outputs/logs
+
+# ========= Training =========
+training:
+  num_epochs: 3
+  batch_size: 2
+  gradient_accumulation_steps: 8
+  learning_rate: 2e-4
+  warmup_steps: 100
+  max_seq_length: 2048
+  fp16: true
+
+# ========= LoRA =========
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+
+# ========= Inference =========
+generation:
+  temperature: 0.1
+  top_p: 0.9
+  max_new_tokens: 512

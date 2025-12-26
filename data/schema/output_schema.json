@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "required": [
+    "general_question",
+    "extracted_numbers",
+    "unified_program"
+  ],
+  "properties": {
+    "general_question": { "type": "string" },
+    "extracted_numbers": { "type": "object" },
+    "unified_program": { "type": "string" }
+  }
+}
